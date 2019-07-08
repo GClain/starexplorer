@@ -31,7 +31,7 @@ physics.setGravity(0,0)
 math.randomseed(os.time())
 
 
--- Configure image sheet for animations
+-- Configure image sheet 
 local sheetOptions = {
     frames = 
     {
@@ -69,3 +69,16 @@ local sheetOptions = {
 }
 local objecSheet = graphics.newImageSheet ("gameObjects.png", sheetOptions)
 
+-- Load de background
+local background = display.newImageRect(backGroup, "background.png", 800, 1400)
+background.x = display.contentCenterX
+background.y = display.contentCenterY
+
+ship = display.newImageRect(mainGroup, objecSheet, 4, 98, 79)
+-- On place le ship dans le mainGroup
+-- le second parametre est la reference de l'image sheet plus haut, 4 étant le numero de frame
+-- les 2 derniers parametres sont la longueur et hauteur du sheet
+ship.x = display.contentCenterX
+ship.y = display.contentHeight -100
+physics.addBody(ship, { radius = 30, isSensor= true})
+ship.myName ="ship"
