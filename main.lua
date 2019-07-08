@@ -16,6 +16,13 @@ local gameLoopTimer
 local livesText
 local scoreText
 
+-- Set up display groups
+-- Plus ous moins equivalent a des layers
+local backGroup = display.newGroup()
+local mainGroup = display.newGroup()
+local uiGroup = display.newGroup()
+
+
 local physics = require ("physics")
 physics.start()
 physics.setGravity(0,0)
@@ -61,3 +68,4 @@ local sheetOptions = {
     },
 }
 local objecSheet = graphics.newImageSheet ("gameObjects.png", sheetOptions)
+
