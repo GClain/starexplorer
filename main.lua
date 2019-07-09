@@ -67,14 +67,14 @@ local sheetOptions = {
         },
     },
 }
-local objecSheet = graphics.newImageSheet ("gameObjects.png", sheetOptions)
+local objectSheet = graphics.newImageSheet ("gameObjects.png", sheetOptions)
 
 -- Load de background
 local background = display.newImageRect(backGroup, "background.png", 800, 1400)
 background.x = display.contentCenterX
 background.y = display.contentCenterY
 
-ship = display.newImageRect(mainGroup, objecSheet, 4, 98, 79)
+ship = display.newImageRect(mainGroup, objectSheet, 4, 98, 79)
 -- On place le ship dans le mainGroup
 -- le second parametre est la reference de l'image sheet plus haut, 4 étant le numero de frame
 -- les 2 derniers parametres sont la longueur et hauteur du sheet
@@ -98,7 +98,7 @@ local function updateText()
 end
 
 local function createAteroid()
-    local newAsteroid = display.newImageRect(mainGroup, objecSheet, 1, 102, 85)
+    local newAsteroid = display.newImageRect(mainGroup, objectSheet, 1, 102, 85)
     table.insert (asteroidTable, newAsteroid)
     physics.addBody(newAsteroid, "dynamic", { radius=40, bounce=0.8 })
     newAsteroid.myName ="asteroid"
@@ -125,3 +125,19 @@ local function createAteroid()
 
     newAsteroid:applyTorque (math.random(-6,6))
 end
+
+local function fireLaser()
+    local newLaser = display.newImageRect (mainGroup, objectSheet, 5, 14, 40 )
+    physics.addBody( newLaser, "dynamic", { isSensor = true })
+    newLaser.isBullet = true
+    newLaser.myName = "laser"
+    newLaser.x = ship.x
+    newLaser.y = ship.y
+    newLaser:toBack()
+
+    transition.to (newLaser, { y=-40, time=500,
+        onComplete = function() display.remove(newLaser  ) end
+    })
+end
+
+ship:addEventListener ("tap", fireLaser)
