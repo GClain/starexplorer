@@ -141,3 +141,27 @@ local function fireLaser()
 end
 
 ship:addEventListener ("tap", fireLaser)
+
+local function dragShip (event)
+    local ship = event.target
+    -- Gestion des touch mobile
+    local phase = event.phase 
+
+    if ("began" == phase) then
+        -- Set touch focus on the ship
+        display.currentStage:setFocus (ship)
+        -- Store initial offset position
+        ship.touchOffset = event.x - ship.x
+    elseif ("moved" == phase)   then
+        -- Move the ship to the new touch position
+        -- On restreint mouvement vaisseau pour l'axe X seulement, on ne gere pas axe Y
+        ship.x = event.x - ship.touchOffset 
+    elseif ("ended" == phase or "cancelled" == phase) then
+        -- Release touch ocus on the ship
+        display.currentStage:setFocus(nil)
+
+    end
+    return true -- Prevents touch propagation to underlying objects
+end
+
+ship: addEventListener ("touch", dragShip)
