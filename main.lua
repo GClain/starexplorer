@@ -97,7 +97,7 @@ local function updateText()
     scoreText.text = "Score: ".. lives
 end
 
-local function createAteroid()
+local function createAsteroid()
     local newAsteroid = display.newImageRect(mainGroup, objectSheet, 1, 102, 85)
     table.insert (asteroidTable, newAsteroid)
     physics.addBody(newAsteroid, "dynamic", { radius=40, bounce=0.8 })
@@ -165,3 +165,26 @@ local function dragShip (event)
 end
 
 ship: addEventListener ("touch", dragShip)
+
+local function gameLoop()
+    -- create new asteroid
+    createAsteroid()
+
+    -- remove asteriods which have drifted off screen
+    for i = #asteroidTable, 1, -1 do
+        local thisAsteroid = asteroidTable[i]
+        if ( thisAsteroid.x < -100 or
+             thisAsteroid.x > display.contentWidth +100 or
+             thisAsteroid.y < -100 or
+             thisAsteroid.y > display.contentHeight +100)
+        then
+            display.remove (thisAsteroid)
+            table.remove (asteroidTable,i)
+        end    
+    end
+end
+
+-- fonction pour ne pas appeler gameloop toutes les secondes
+-- Dernier parametre = est le nombre de fois que le looptimer est lancé
+-- 0 = infini
+gameLoopTimer = timer.performWithDelay(500, gameLoop,0)
