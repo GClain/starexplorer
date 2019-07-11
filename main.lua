@@ -188,3 +188,22 @@ end
 -- Dernier parametre = est le nombre de fois que le looptimer est lancé
 -- 0 = infini
 gameLoopTimer = timer.performWithDelay(500, gameLoop,0)
+
+
+-- gestion restore ship
+local function restoreShip()
+    ship.isBodyActive = false
+    ship.x = display.contentCenterX
+    ship.y = display.contentHeight -100
+
+    -- Fade the ship
+    transition.to (ship, {
+        alpha = 1,
+        time = 4000,
+        onComplete = function () -- callback function
+            ship.isBodyActive = true
+            died = false
+        end
+    })
+
+end
